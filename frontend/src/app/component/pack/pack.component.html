@@ -1,0 +1,299 @@
+<app-navbar></app-navbar>
+<div class="m-10 mt-[130px] overflow-x-auto bg-gray-100">
+    <h1 class="text-3xl font-bold mb-5 text-blue-600">Packs</h1>
+    <!-- Search input -->
+    <div class="relative float-left m-[2px] mb-3 mr-5">
+        <input
+                id="inputSearch"
+                type="text"
+                placeholder="Search..."
+                class="block w-64 rounded-lg border py-2 pl-10 pr-4 text-sm focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400"
+                (input)="onSearch($any($event.target).value)"
+        />
+    </div>
+
+    <!-- Add button -->
+    <div class="relative float-right m-[5px] mb-3 hidden sm:block">
+        <button
+                class="bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-gray-100 hover:text-blue-500 border border-1 hover:border-blue-500 transition duration-300"
+                (click)="openAddModal()"
+        >
+            Add Pack
+        </button>
+    </div>
+
+    <!-- Table -->
+    <table class="min-w-full whitespace-nowrap text-left text-xs">
+        <thead class="border-b-2 border-t uppercase tracking-wider">
+        <tr>
+            <th class="border-x px-6 py-2">Name</th>
+            <th class="border-x px-6 py-2">Description</th>
+            <th class="border-x px-6 py-2">Price</th>
+            <th class="border-x px-6 py-2">Articles</th>
+            <th class="border-x px-6 py-2">Operations</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let pack of packs" class="border-b hover:bg-neutral-200">
+            <th class="border-x px-6 py-2">{{ pack.name }}</th>
+            <td class="border-x px-6 py-2">{{ pack.description }}</td>
+            <td class="border-x px-6 py-2">{{ pack.price | number: '1.2-2' }} MAD</td>
+            <td class="border-x px-6 py-2 relative">
+                <span
+                        (click)="togglePackExpansion(pack.id, $event)"
+                        class="cursor-pointer text-blue-500 hover:underline articles-trigger-{{pack.id}}"
+                >
+                        {{ pack.articleNames[0] || 'No Articles' }}
+                    </span>
+                <div *ngIf="expandedPacks[pack.id]" class="absolute left-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10 articles-dropdown-{{pack.id}}" style="max-height: 200px; overflow-y: auto;">
+                    <div *ngFor="let articleName of pack.articleNames" class="p-2 hover:bg-gray-100">
+                        {{articleName}}
+                    </div>
+                </div>
+            </td>
+            <td class="border-x px-6 py-2">
+                <button
+                        class="bg-gray-100  text-yellow-500 py-1 px-3 rounded border border-1 border-yellow-500 hover:bg-yellow-400 hover:text-white transition duration-200"
+                        (click)="openUpdateModal(pack)"
+                >
+                    Update
+                </button>
+                <button
+                        class="bg-gray-100 text-red-500 py-1 px-3 rounded border border-1 border-red-500 hover:bg-red-500 hover:text-white ml-2 transition duration-300"
+                        (click)="openDeleteModal(pack)"
+                >
+                    Delete
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- Pagination -->
+    <nav class="flex items-center gap-x-1 float-right mt-4" aria-label="Pagination">
+        <button
+                type="button"
+                class="min-h-[38px] min-w-[38px] py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 text-sm rounded-lg text-blue-400 hover:text-blue-500  hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
+                aria-label="Previous"
+                [disabled]="currentPage === 0"
+                (click)="goToPage(currentPage -1)"
+        >
+            <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15 18-6-6 6-6"></path>
+            </svg>
+            <span>Previous</span>
+        </button>
+        <div class="flex items-center gap-x-1">
+            <ng-container *ngFor="let page of pages">
+                <button
+                        *ngIf="typeof page.value === 'number'"
+                        type="button"
+                        [ngClass]="{
+                    'min-h-[38px] min-w-[38px] flex justify-center items-center text-blue-400  py-2 px-3 text-sm rounded-lg focus:outline-none disabled:opacity-50 disabled:pointer-events-none': true,
+                    'bg-blue-100 text-blue-600 hover:bg-blue-200': page.value === currentPage,
+                    'hover:text-blue-500 hover:bg-gray-100': page.value !== currentPage
+                    }"
+                        (click)="goToPage(page.value)"
+                >
+                    {{  page.display }}
+                </button>
+                <span *ngIf="page.value === '...'" class="text-blue-400">...</span>
+            </ng-container>
+        </div>
+        <button
+                type="button"
+                class="min-h-[38px] min-w-[38px] py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 text-sm rounded-lg text-blue-400 hover:text-blue-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none"
+                aria-label="Next"
+                [disabled]="currentPage === totalPages -1"
+                (click)="goToPage(currentPage + 1)"
+        >
+            <span>Next</span>
+            <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m9 18 6-6-6-6"></path>
+            </svg>
+        </button>
+    </nav>
+    <!-- End Pagination -->
+</div>
+
+<!-- Add Modal -->
+<div *ngIf="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+        <h2 class="text-lg font-semibold mb-4">Add Pack</h2>
+        <form (ngSubmit)="onAddPack()">
+            <div class="mb-4">
+                <input
+                        type="text"
+                        [(ngModel)]="newPack.name"
+                        name="name"
+                        placeholder="Name"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        [(ngModel)]="newPack.description"
+                        name="description"
+                        placeholder="Description"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="number"
+                        [(ngModel)]="newPack.price"
+                        name="price"
+                        placeholder="Price"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4 relative">
+                <button type="button"
+                        (click)="toggleArticleDropdownAdd()"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-left articles-trigger-add"
+                >
+                    Select Articles
+                </button>
+                <div *ngIf="showArticleDropdownAdd" class="absolute left-0 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10 articles-dropdown-add"
+                     style="max-height: 150px; overflow-y: auto;"
+                >
+                    <div *ngFor="let article of allArticleNames" class="flex items-center p-2">
+                        <input
+                                type="checkbox"
+                                [value]="article"
+                                (change)="updateSelectedArticles(article, $event, newPack)"
+                                class="mr-2"
+                        />
+                        <label>{{ article }}</label>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="addErrorMessage" class="text-red-500 mb-4">
+                {{ addErrorMessage }}
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button
+                        type="button"
+                        class="px-4 py-2 bg-gray-300 rounded-xl hover:bg-gray-200 transition duration-300"
+                        (click)="closeAddModal()"
+                >
+                    Cancel
+                </button>
+                <button
+                        type="submit"
+                        class="px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-400 transition duration-300"
+                >
+                    Add
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Update Modal -->
+<div *ngIf="showUpdateModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+        <h2 class="text-lg font-semibold mb-4">Update Pack</h2>
+        <form (ngSubmit)="onUpdatePack()">
+            <div class="mb-4">
+                <input
+                        type="text"
+                        [(ngModel)]="editPack.name"
+                        name="name"
+                        placeholder="Name"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        [(ngModel)]="editPack.description"
+                        name="description"
+                        placeholder="Description"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="number"
+                        [(ngModel)]="editPack.price"
+                        name="price"
+                        placeholder="Price"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4 relative">
+                <button type="button"
+                        (click)="toggleArticleDropdownUpdate()"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-left articles-trigger-update"
+                >
+                    Select Articles
+                </button>
+                <div *ngIf="showArticleDropdownUpdate" class="absolute left-0 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10 articles-dropdown-update"
+                     style="max-height: 150px; overflow-y: auto;"
+                >
+                    <div *ngFor="let article of allArticleNames" class="flex items-center p-2">
+                        <input
+                                type="checkbox"
+                                [value]="article"
+                                [checked]="editPack.articleNames.includes(article)"
+                                (change)="updateSelectedArticles(article, $event, editPack)"
+                                class="mr-2"
+                        />
+                        <label>{{ article }}</label>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="updateErrorMessage" class="text-red-500 mb-4">
+                {{ updateErrorMessage }}
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button
+                        type="button"
+                        class="px-4 py-2 bg-gray-300 rounded-xl hover:bg-gray-200 transition duration-300"
+                        (click)="closeUpdateModal()"
+                >
+                    Cancel
+                </button>
+                <button
+                        type="submit"
+                        class="px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-400 transition duration-300"
+                >
+                    Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div *ngIf="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+        <h2 class="text-lg font-semibold mb-4">Delete Pack</h2>
+        <p class="mb-4">Are you sure you want to delete this pack?</p>
+        <div *ngIf="generalErrorMessage" class="text-red-500 mb-4">
+            {{ generalErrorMessage }}
+        </div>
+        <div class="flex justify-end space-x-4">
+            <button
+                    class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-200 transition duration-300"
+                    (click)="closeDeleteModal()"
+            >
+                Cancel
+            </button>
+            <button
+                    class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-400 transition duration-300"
+                    (click)="onDeletePack()"
+            >
+                Delete
+            </button>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>
