@@ -29,6 +29,18 @@ public class Client {
     @Size(min = 2, max = 70, message = "Name must be between 2 and 70 characters")
     private String name;
 
+    @Column(name="code_client", unique = true)
+    private String codeClient;
+
+    @Column
+    private String designation;
+
+    @Column(name="ice", unique = true)
+    private String ice;
+
+    @Column(name="rc", unique = true)
+    private String rc;
+
     @Column(name = "cin", unique = true)
     private String cin;
 

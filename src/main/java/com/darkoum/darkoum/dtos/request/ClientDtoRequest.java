@@ -14,6 +14,15 @@ public class ClientDtoRequest {
     @Size(min = 2, max = 70, message = "Name must be between 2 and 70 characters")
     private String name;
 
+    private String codeClient;
+
+    private String designation;
+
+    private String ice;
+
+    private String rc;
+
+
     @Email(message = "Email should be valid")
     private String email;
 

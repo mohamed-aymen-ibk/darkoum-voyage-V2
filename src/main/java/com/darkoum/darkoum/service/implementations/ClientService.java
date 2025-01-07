@@ -40,6 +40,10 @@ public class ClientService implements ClientServiceInterface {
         client.setPhoneNumber(clientDtoRequest.getPhoneNumber());
         client.setAddress(clientDtoRequest.getAddress());
         client.setCin(clientDtoRequest.getCin());
+        client.setCodeClient(clientDtoRequest.getCodeClient());
+        client.setDesignation(clientDtoRequest.getDesignation());
+        client.setIce(clientDtoRequest.getIce());
+        client.setRc(clientDtoRequest.getRc());
         client.setUser(user);
         Client savedClient = clientRepository.save(client);
         return mapToDto(savedClient);
@@ -82,6 +86,11 @@ public class ClientService implements ClientServiceInterface {
         client.setPhoneNumber(clientDtoRequest.getPhoneNumber());
         client.setAddress(clientDtoRequest.getAddress());
         client.setCin(clientDtoRequest.getCin());
+        client.setCodeClient(clientDtoRequest.getCodeClient());
+        client.setDesignation(clientDtoRequest.getDesignation());
+        client.setIce(clientDtoRequest.getIce());
+        client.setRc(clientDtoRequest.getRc());
+
 
         Client updatedClient =   clientRepository.save(client);
         return mapToDto(updatedClient);
@@ -101,6 +110,10 @@ public class ClientService implements ClientServiceInterface {
         dto.setPhoneNumber(client.getPhoneNumber());
         dto.setAddress(client.getAddress());
         dto.setCin(client.getCin());
+        dto.setCodeClient(client.getCodeClient());
+        dto.setDesignation(client.getDesignation());
+        dto.setIce(client.getIce());
+        dto.setRc(client.getRc());
         if (client.getUser() != null)
         {
             dto.setUserName(client.getUser().getName());

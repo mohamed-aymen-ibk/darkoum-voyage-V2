@@ -5,6 +5,10 @@ export interface ClientDtoRequest {
     phoneNumber: string;
     address: string;
     userId: number;
+    codeClient: string;
+    designation: string;
+    ice: string;
+    rc: string;
 }
 
 export interface ClientDtoResponse {
@@ -14,4 +18,8 @@ export interface ClientDtoResponse {
     email: string;
     phoneNumber: string;
     address: string;
+    codeClient: string;
+    designation: string;
+    ice: string;
+    rc: string;
 }

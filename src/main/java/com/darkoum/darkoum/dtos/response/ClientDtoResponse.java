@@ -9,6 +9,10 @@ public class ClientDtoResponse {
 
     private Long id;
     private String name;
+    private String codeClient;
+    private String designation;
+    private String ice;
+    private String rc;
     private String email;
     private String phoneNumber;
     private String address;

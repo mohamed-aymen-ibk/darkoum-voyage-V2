@@ -17,9 +17,42 @@ export class ClientComponent implements OnInit {
     showAddModal = false;
     showUpdateModal = false;
     showDeleteModal = false;
-    newClient: ClientDtoRequest = { name: '', cin: '', email: '', phoneNumber: '', address: '', userId: 0 };
-    editClient: ClientDtoResponse = { id:0, cin: '', name: '', email: '', phoneNumber: '', address: ''};
-    clientToDelete:  ClientDtoResponse = { id:0, name: '', cin: '', email: '', phoneNumber: '', address: ''};
+    newClient: ClientDtoRequest = {
+        name: '',
+        cin: '',
+        email: '',
+        phoneNumber: '',
+        address: '',
+        userId: 0,
+        codeClient: '',
+        designation: '',
+        ice: '',
+        rc: ''
+    };
+    editClient: ClientDtoResponse = {
+        id:0,
+        cin: '',
+        name: '',
+        email: '',
+        phoneNumber: '',
+        address: '',
+        codeClient: '',
+        designation: '',
+        ice: '',
+        rc: ''
+    };
+    clientToDelete:  ClientDtoResponse = {
+        id:0,
+        name: '',
+        cin: '',
+        email: '',
+        phoneNumber: '',
+        address: '',
+        codeClient: '',
+        designation: '',
+        ice: '',
+        rc: ''
+    };
     addErrorMessage: string | null = null;
     updateErrorMessage: string | null = null;
     generalErrorMessage: string | null = null;
@@ -52,7 +85,18 @@ export class ClientComponent implements OnInit {
 
 
     openAddModal(): void {
-        this.newClient = { name: '', email: '', phoneNumber: '', address: '', cin: '', userId: this.getUserId() };
+        this.newClient = {
+            name: '',
+            email: '',
+            phoneNumber: '',
+            address: '',
+            cin: '',
+            userId: this.getUserId(),
+            codeClient: '',
+            designation: '',
+            ice: '',
+            rc: ''
+        };
         this.showAddModal = true;
         this.addErrorMessage = null; // Reset error message
     }
@@ -93,7 +137,11 @@ export class ClientComponent implements OnInit {
                 phoneNumber: this.editClient.phoneNumber,
                 address: this.editClient.address,
                 cin: this.editClient.cin,
-                userId: this.getUserId()
+                userId: this.getUserId(),
+                codeClient: this.editClient.codeClient,
+                designation: this.editClient.designation,
+                ice: this.editClient.ice,
+                rc: this.editClient.rc
             };
 
             this.clientService.updateClient(this.editClient.id, clientToUpdate).subscribe(
@@ -116,7 +164,18 @@ export class ClientComponent implements OnInit {
 
     closeDeleteModal(): void {
         this.showDeleteModal = false;
-        this.clientToDelete = { id:0, name: '', email: '', phoneNumber: '', address: '', cin:'' };
+        this.clientToDelete = {
+            id:0,
+            name: '',
+            email: '',
+            phoneNumber: '',
+            address: '',
+            cin:'',
+            codeClient: '',
+            designation: '',
+            ice: '',
+            rc: ''
+        };
     }
 
     onDeleteClient(): void {
