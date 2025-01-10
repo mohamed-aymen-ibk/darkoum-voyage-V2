@@ -4,7 +4,7 @@ import {NgClass, NgForOf, NgIf} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {NavbarComponent} from "../shared/navbar/navbar.component";
 import {FooterComponent} from "../shared/footer/footer.component";
-import {ClientDtoRequest, ClientDtoResponse} from "../../models/client.dtos";
+import {ClientDtoRequest as ClientDtoRequestModel, ClientDtoResponse as ClientDtoResponseModel} from "../../models/client.dtos";
 
 @Component({
     selector: 'app-client',
@@ -13,11 +13,11 @@ import {ClientDtoRequest, ClientDtoResponse} from "../../models/client.dtos";
     styleUrls: ['./client.component.css'],
 })
 export class ClientComponent implements OnInit {
-    clients: ClientDtoResponse[] = [];
+    clients: ClientDtoResponseModel[] = [];
     showAddModal = false;
     showUpdateModal = false;
     showDeleteModal = false;
-    newClient: ClientDtoRequest = {
+    newClient: ClientDtoRequestModel = {
         name: '',
         cin: '',
         email: '',
@@ -29,7 +29,7 @@ export class ClientComponent implements OnInit {
         ice: '',
         rc: ''
     };
-    editClient: ClientDtoResponse = {
+    editClient: ClientDtoResponseModel = {
         id:0,
         cin: '',
         name: '',
@@ -41,7 +41,7 @@ export class ClientComponent implements OnInit {
         ice: '',
         rc: ''
     };
-    clientToDelete:  ClientDtoResponse = {
+    clientToDelete:  ClientDtoResponseModel = {
         id:0,
         name: '',
         cin: '',
@@ -62,6 +62,8 @@ export class ClientComponent implements OnInit {
     totalPages = 0;
     totalElements = 0;
     pages: ({ value: number | '...', display: string })[] = [];
+    addFormErrors: { [key: string]: boolean } = {};
+    updateFormErrors: { [key: string]: boolean } = {};
 
     constructor(private clientService: ClientService) {}
 
@@ -99,6 +101,7 @@ export class ClientComponent implements OnInit {
         };
         this.showAddModal = true;
         this.addErrorMessage = null; // Reset error message
+        this.addFormErrors = {};
     }
 
     closeAddModal(): void {
@@ -106,6 +109,11 @@ export class ClientComponent implements OnInit {
     }
 
     onAddClient(): void {
+        this.addFormErrors = this.validateForm(this.newClient);
+
+        if (Object.keys(this.addFormErrors).length > 0) {
+            return;
+        }
         this.newClient.userId = this.getUserId(); // Ensure userId is set
 
         this.clientService.addClient(this.newClient).subscribe(
@@ -119,10 +127,11 @@ export class ClientComponent implements OnInit {
         );
     }
 
-    openUpdateModal(client: ClientDtoResponse): void {
+    openUpdateModal(client: ClientDtoResponseModel): void {
         this.editClient = { ...client };
         this.showUpdateModal = true;
         this.updateErrorMessage = null; // Reset error message
+        this.updateFormErrors = {};
     }
 
     closeUpdateModal(): void {
@@ -130,8 +139,14 @@ export class ClientComponent implements OnInit {
     }
 
     onUpdateClient(): void {
+        this.updateFormErrors = this.validateForm(this.editClient);
+
+        if (Object.keys(this.updateFormErrors).length > 0) {
+            return;
+        }
+
         if (this.editClient && this.editClient.id) {
-            const clientToUpdate: ClientDtoRequest = {
+            const clientToUpdate: ClientDtoRequestModel = {
                 name: this.editClient.name,
                 email: this.editClient.email,
                 phoneNumber: this.editClient.phoneNumber,
@@ -156,7 +171,7 @@ export class ClientComponent implements OnInit {
         }
     }
 
-    openDeleteModal(client: ClientDtoResponse): void {
+    openDeleteModal(client: ClientDtoResponseModel): void {
         this.clientToDelete = client;
         this.showDeleteModal = true;
         this.generalErrorMessage = null; // Reset error message
@@ -235,6 +250,18 @@ export class ClientComponent implements OnInit {
             }
         }
     }
+    private validateForm(client: any): { [key: string]: boolean } {
+        const errors: { [key: string]: boolean } = {};
+        for (const key in client) {
+            if (client.hasOwnProperty(key) && typeof client[key] === 'string' ) {
+                if (!client[key] || client[key].trim() === '') {
+                    errors[key] = true;
+                }
+            }
+        }
+        return errors;
+    }
+
 
     private handleAddError(error: any): string {
         if (error.status === 400) {
