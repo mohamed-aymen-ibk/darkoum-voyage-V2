@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
-    List<Client> findByUserId(Long userId);
     Page<Client> findByNameContainingIgnoreCase(String name, Pageable pageable);
     @Query("SELECT c.name FROM Client c")
     List<String> findAllClientNames();

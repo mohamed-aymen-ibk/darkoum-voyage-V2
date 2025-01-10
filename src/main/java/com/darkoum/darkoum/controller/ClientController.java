@@ -43,11 +43,6 @@ public class ClientController {
         return ResponseEntity.ok(clientService.getAllClientNames());
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ClientDtoResponse>> getClientsByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(clientService.getClientsByUser(userId));
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<ClientDtoResponse> updateClient(
             @PathVariable Long id,

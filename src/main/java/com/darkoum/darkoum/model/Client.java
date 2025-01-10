@@ -63,9 +63,6 @@ public class Client {
     private LocalDateTime updatedAt;
 
     // Relations
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Pack> packs;

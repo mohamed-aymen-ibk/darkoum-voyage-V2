@@ -15,8 +15,6 @@ public interface ClientServiceInterface {
 
     Page<ClientDtoResponse> searchClientsByName(String name, int page, int size);
 
-    List<ClientDtoResponse> getClientsByUser(Long userId);
-
     ClientDtoResponse updateClient(Long id, ClientDtoRequest clientDtoRequest);
 
     void deleteClient(Long id);

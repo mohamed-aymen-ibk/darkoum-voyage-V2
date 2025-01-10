@@ -17,5 +17,4 @@ public class ClientDtoResponse {
     private String phoneNumber;
     private String address;
     private String cin;
-    private String userName;
 }

@@ -31,6 +31,4 @@ public class ClientDtoRequest {
     private String address;
 
     private String cin;
-
-    private Long userId;
 }

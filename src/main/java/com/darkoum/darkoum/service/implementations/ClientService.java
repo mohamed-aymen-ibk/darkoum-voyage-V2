@@ -25,14 +25,9 @@ public class ClientService implements ClientServiceInterface {
     @Autowired
     private ClientRepository clientRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
     @Transactional
     public ClientDtoResponse createClient(ClientDtoRequest clientDtoRequest) {
-        User user = userRepository.findUserById(clientDtoRequest.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
         Client client = new Client();
         client.setName(clientDtoRequest.getName());
@@ -44,7 +39,6 @@ public class ClientService implements ClientServiceInterface {
         client.setDesignation(clientDtoRequest.getDesignation());
         client.setIce(clientDtoRequest.getIce());
         client.setRc(clientDtoRequest.getRc());
-        client.setUser(user);
         Client savedClient = clientRepository.save(client);
         return mapToDto(savedClient);
     }
@@ -68,13 +62,7 @@ public class ClientService implements ClientServiceInterface {
         return clientRepository.findByNameContainingIgnoreCase(name, pageable)
                 .map(this::mapToDto);
     }
-    @Override
-    public List<ClientDtoResponse> getClientsByUser(Long userId) {
-        return clientRepository.findByUserId(userId)
-                .stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
-    }
+
     @Override
     @Transactional
     public ClientDtoResponse updateClient(Long id, ClientDtoRequest clientDtoRequest) {
@@ -114,10 +102,7 @@ public class ClientService implements ClientServiceInterface {
         dto.setDesignation(client.getDesignation());
         dto.setIce(client.getIce());
         dto.setRc(client.getRc());
-        if (client.getUser() != null)
-        {
-            dto.setUserName(client.getUser().getName());
-        }
+       
         return dto;
     }
     @Override
