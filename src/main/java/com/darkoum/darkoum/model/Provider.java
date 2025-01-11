@@ -37,6 +37,9 @@ public class Provider {
     @Column
     private String address;
 
+    @Column(name = "code_provider")
+    private String codeProvider;
+
     @Column(name = "designation")
     private String designation;
 
@@ -48,7 +51,6 @@ public class Provider {
 
     @Column(name = "rib")
     private String rib;
-
 
     @Column(name = "created_at")
     @CreationTimestamp

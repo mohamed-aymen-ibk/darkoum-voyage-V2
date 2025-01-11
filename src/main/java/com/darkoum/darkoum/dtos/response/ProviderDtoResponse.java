@@ -13,6 +13,7 @@ public class ProviderDtoResponse {
     private String email;
     private String phone;
     private String address;
+    private String codeProvider;
     private String designation;
     private String ice;
     private String rc;

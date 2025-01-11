@@ -30,7 +30,11 @@
             <th class="border-x px-6 py-2">Email</th>
             <th class="border-x px-6 py-2">Phone</th>
             <th class="border-x px-6 py-2">Address</th>
-            <th class="border-x px-6 py-2">Service</th>
+            <th class="border-x px-6 py-2">Code</th>
+            <th class="border-x px-6 py-2">Designation</th>
+            <th class="border-x px-6 py-2">ICE</th>
+            <th class="border-x px-6 py-2">RC</th>
+            <th class="border-x px-6 py-2">RIB</th>
             <th class="border-x px-6 py-2">Date</th>
             <th class="border-x px-6 py-2">Operations</th>
         </tr>
@@ -41,7 +45,11 @@
             <td class="border-x px-6 py-2">{{ provider.email }}</td>
             <td class="border-x px-6 py-2">{{ provider.phone }}</td>
             <td class="border-x px-6 py-2">{{ provider.address }}</td>
-            <td class="border-x px-6 py-2">{{ provider.serviceType }}</td>
+            <td class="border-x px-6 py-2">{{ provider.codeProvider }}</td>
+            <td class="border-x px-6 py-2">{{ provider.designation }}</td>
+            <td class="border-x px-6 py-2">{{ provider.ice }}</td>
+            <td class="border-x px-6 py-2">{{ provider.rc }}</td>
+            <td class="border-x px-6 py-2">{{ provider.rib }}</td>
             <td class="border-x px-6 py-2">{{ provider.createdAt | date : 'short' }}</td>
             <td class="border-x px-6 py-2">
                 <button
@@ -155,9 +163,49 @@
             <div class="mb-4">
                 <input
                         type="text"
-                        [(ngModel)]="newProvider.serviceType"
-                        name="serviceType"
-                        placeholder="Service"
+                        [(ngModel)]="newProvider.codeProvider"
+                        name="codeProvider"
+                        placeholder="Code Provider"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        [(ngModel)]="newProvider.designation"
+                        name="designation"
+                        placeholder="Designation"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        [(ngModel)]="newProvider.ice"
+                        name="ice"
+                        placeholder="ICE"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        [(ngModel)]="newProvider.rc"
+                        name="rc"
+                        placeholder="RC"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        [(ngModel)]="newProvider.rib"
+                        name="rib"
+                        placeholder="RIB"
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required
                 />
@@ -232,9 +280,49 @@
             <div class="mb-4">
                 <input
                         type="text"
-                        [(ngModel)]="editProvider.serviceType"
-                        name="serviceType"
-                        placeholder="Service"
+                        [(ngModel)]="editProvider.codeProvider"
+                        name="codeProvider"
+                        placeholder="Code Provider"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        [(ngModel)]="editProvider.designation"
+                        name="designation"
+                        placeholder="Designation"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        [(ngModel)]="editProvider.ice"
+                        name="ice"
+                        placeholder="ICE"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        [(ngModel)]="editProvider.rc"
+                        name="rc"
+                        placeholder="RC"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        required
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        [(ngModel)]="editProvider.rib"
+                        name="rib"
+                        placeholder="RIB"
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required
                 />

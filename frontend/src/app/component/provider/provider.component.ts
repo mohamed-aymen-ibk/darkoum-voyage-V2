@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProviderService } from '../../services/provider/provider.service';
-import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import { DatePipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from "../shared/navbar/navbar.component";
 import { FooterComponent } from "../shared/footer/footer.component";
@@ -17,9 +17,9 @@ export class ProviderComponent implements OnInit {
     showAddModal = false;
     showUpdateModal = false;
     showDeleteModal = false;
-    newProvider: ProviderDtoRequest = { name: '', email: '', phone: '' , address: '', serviceType: ''};
-    editProvider: ProviderDtoResponse = { id: 0, name: '', email: '', phone: '', address: '', serviceType: '', createdAt: new Date() };
-    providerToDelete: ProviderDtoResponse = { id: 0, name: '', email: '', phone: '', address: '', serviceType: '', createdAt: new Date() };
+    newProvider: ProviderDtoRequest = { name: '', email: '', phone: '', address: '', codeProvider: '', designation: '', ice: '', rc: '', rib: '' };
+    editProvider: ProviderDtoResponse = { id: 0, name: '', email: '', phone: '', address: '', codeProvider: '', designation: '', ice: '', rc: '', rib: '', createdAt: new Date() };
+    providerToDelete: ProviderDtoResponse = { id: 0, name: '', email: '', phone: '', address: '', codeProvider: '', designation: '', ice: '', rc: '', rib: '', createdAt: new Date() };
     addErrorMessage: string | null = null;
     updateErrorMessage: string | null = null;
     generalErrorMessage: string | null = null;
@@ -52,7 +52,7 @@ export class ProviderComponent implements OnInit {
     }
 
     openAddModal(): void {
-        this.newProvider = { name: '', email: '', phone: '', address: '', serviceType: '' };
+        this.newProvider = { name: '', email: '', phone: '', address: '', codeProvider: '', designation: '', ice: '', rc: '', rib: '' };
         this.showAddModal = true;
         this.addErrorMessage = null; // Reset error message
     }
@@ -105,7 +105,7 @@ export class ProviderComponent implements OnInit {
 
     closeDeleteModal(): void {
         this.showDeleteModal = false;
-        this.providerToDelete = { id: 0, name: '', email: '', phone: '', address: '', serviceType: '', createdAt: new Date() };
+        this.providerToDelete = { id: 0, name: '', email: '', phone: '', address: '', codeProvider: '', designation: '', ice: '', rc: '', rib: '', createdAt: new Date() };
     }
 
     onDeleteProvider(): void {
@@ -126,7 +126,7 @@ export class ProviderComponent implements OnInit {
         this.currentPage = 0;
         this.loadProviders();
     }
-    goToPage(page: number):void{
+    goToPage(page: number): void {
         this.currentPage = page;
         this.loadProviders()
     }
@@ -138,27 +138,27 @@ export class ProviderComponent implements OnInit {
             }
         } else {
             if (this.currentPage < 5) {
-                for (let i = 0; i < 7 && i < this.totalPages ; i++) {
+                for (let i = 0; i < 7 && i < this.totalPages; i++) {
                     this.pages.push(i)
                 }
                 this.pages.push('...');
                 this.pages.push(this.totalPages - 1)
             }
-            else if (this.currentPage >= this.totalPages - 5){
+            else if (this.currentPage >= this.totalPages - 5) {
                 this.pages.push(0);
                 this.pages.push('...');
                 for (let i = this.totalPages - 7; i < this.totalPages; i++) {
                     this.pages.push(i);
                 }
             }
-            else{
+            else {
                 this.pages.push(0)
                 this.pages.push('...')
-                for (let i = this.currentPage -2; i <= this.currentPage + 2; i++) {
+                for (let i = this.currentPage - 2; i <= this.currentPage + 2; i++) {
                     this.pages.push(i);
                 }
                 this.pages.push('...')
-                this.pages.push(this.totalPages-1)
+                this.pages.push(this.totalPages - 1)
             }
         }
     }
