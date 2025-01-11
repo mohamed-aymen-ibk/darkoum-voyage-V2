@@ -37,8 +37,18 @@ public class Provider {
     @Column
     private String address;
 
-    @Column(name = "service_type")
-    private String serviceType;
+    @Column(name = "designation")
+    private String designation;
+
+    @Column(name = "ice")
+    private String ice;
+
+    @Column(name = "rc")
+    private String rc;
+
+    @Column(name = "rib")
+    private String rib;
+
 
     @Column(name = "created_at")
     @CreationTimestamp

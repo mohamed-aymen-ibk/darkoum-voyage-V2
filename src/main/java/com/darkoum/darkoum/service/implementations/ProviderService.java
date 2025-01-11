@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -45,18 +44,26 @@ public class ProviderService implements ProviderServiceInterface {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         // Proceed to create the provider
-        Provider provider = new Provider();
-        provider.setName(providerDtoRequest.getName());
-        provider.setEmail(providerDtoRequest.getEmail());
-        provider.setPhoneNumber(providerDtoRequest.getPhone());
-        provider.setAddress(providerDtoRequest.getAddress());
-        provider.setServiceType(providerDtoRequest.getServiceType());
-        provider.setUser(loggedInUser); // Associate provider with the logged-in user
+        Provider provider = getProvider(providerDtoRequest, loggedInUser);
 
         Provider savedProvider = providerRepository.save(provider);
 
         // Map the saved provider to response DTO
         return mapToDto(savedProvider);
+    }
+
+    private static Provider getProvider(ProviderDtoRequest providerDtoRequest, User loggedInUser) {
+        Provider provider = new Provider();
+        provider.setName(providerDtoRequest.getName());
+        provider.setEmail(providerDtoRequest.getEmail());
+        provider.setPhoneNumber(providerDtoRequest.getPhone());
+        provider.setAddress(providerDtoRequest.getAddress());
+        provider.setDesignation(providerDtoRequest.getDesignation());
+        provider.setIce(providerDtoRequest.getIce());
+        provider.setRc(providerDtoRequest.getRc());
+        provider.setRib(providerDtoRequest.getRib());
+        provider.setUser(loggedInUser); // Associate provider with the logged-in user
+        return provider;
     }
 
     @Override
@@ -94,7 +101,10 @@ public class ProviderService implements ProviderServiceInterface {
         provider.setEmail(providerDtoRequest.getEmail());
         provider.setPhoneNumber(providerDtoRequest.getPhone());
         provider.setAddress(providerDtoRequest.getAddress());
-        provider.setServiceType(providerDtoRequest.getServiceType());
+        provider.setDesignation(providerDtoRequest.getDesignation());
+        provider.setIce(providerDtoRequest.getIce());
+        provider.setRc(providerDtoRequest.getRc());
+        provider.setRib(providerDtoRequest.getRib());
 
         Provider updatedProvider = providerRepository.save(provider);
         return mapToDto(updatedProvider);
@@ -114,7 +124,10 @@ public class ProviderService implements ProviderServiceInterface {
         dto.setEmail(provider.getEmail());
         dto.setPhone(provider.getPhoneNumber());
         dto.setAddress(provider.getAddress());
-        dto.setServiceType(provider.getServiceType());
+        dto.setDesignation(provider.getDesignation());
+        dto.setIce(provider.getIce());
+        dto.setRc(provider.getRc());
+        dto.setRib(provider.getRib());
         dto.setCreatedAt(provider.getCreatedAt());
         return dto;
     }

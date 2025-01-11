@@ -24,6 +24,8 @@ public class ProviderDtoRequest {
     @NotBlank(message = "Address is required")
     private String address;
 
-    @NotBlank(message = "Service Type is required")
-    private String serviceType;
+    private String designation;
+    private String ice;
+    private String rc;
+    private String rib;
 }

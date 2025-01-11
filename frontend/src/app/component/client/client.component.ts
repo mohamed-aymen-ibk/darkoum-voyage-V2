@@ -285,7 +285,7 @@ export class ClientComponent implements OnInit {
         if (userDetailsString) {
             try {
                 const userDetails = JSON.parse(userDetailsString);
-                return userDetails.id; // Adjust to the actual property name containing the user ID
+                return userDetails.id;
             } catch (error) {
                 console.error("Error parsing user details from localStorage", error);
             }
